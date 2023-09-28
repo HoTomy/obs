@@ -24,3 +24,18 @@ app.use(users.routes());
 app.use(books.routes());
 app.use(comments.routes());
 
+app.use(async (ctx: RouterContext, next: any) => {
+  try {
+    await next();
+    console.log(ctx.status)
+    if(ctx.status === 404){
+      ctx.body = {err: "Resource not found"};
+    }
+  } catch(err: any) {
+    ctx.body = {err: err};
+  }
+  
+});
+
+
+app.listen(10888);
